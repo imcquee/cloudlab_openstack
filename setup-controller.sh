@@ -4460,6 +4460,14 @@ openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-
 openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.24 testport4
 
 #####################################################################################################################
+wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/5dukzod4ftj9v3g5r8q0ktxzweuj2vvw.vmdk
+
+glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk
+
+project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
+flavor_id=`openstack flavor list -f value | grep m1.small | cut -d' ' -f 1`
+image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
+security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
 port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
 
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
