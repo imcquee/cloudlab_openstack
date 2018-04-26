@@ -4454,6 +4454,8 @@ subnet_id=`openstack network show -f shell flat-lan-1-net | grep "^subnets=" | c
 
 # See https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/port.html
 openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.21 testport1
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.22 testport2
+
 
 ################################################################################################################
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
@@ -4469,7 +4471,7 @@ port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
 
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 openstack server create --flavor m1.medium --security-group $security_id --image ORANGE --nic port-id=$port_id Node1
-
+openstack server create --flavor m1.medium --security-group $security_id --image ORANGE --nic port-id=$port_id Node2
 #####################################################################################################################
 
 
