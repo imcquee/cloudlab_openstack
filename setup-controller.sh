@@ -4444,7 +4444,7 @@ if [ -n "$DESIGNATE_PASS" -a "${USE_DESIGNATE_AS_RESOLVER}" = "1" ]; then
     fi
 fi
 
-# setup fixed ip addresses
+port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`# setup fixed ip addresses
 
 echo "***"
 echo "running codes to setup interface ports with fixed IP addresses"
@@ -4471,10 +4471,11 @@ port_id=`openstack port list -f value | grep testport1 | cut -d' ' -f 1`
 
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 openstack server create --flavor m1.medium --security-group $security_id --image ORANGE --nic port-id=$port_id Node1
-openstack server create --flavor m1.medium --security-group $security_id --image ORANGE --nic port-id=$port_id Node2
+
 #####################################################################################################################
+port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`
 
-
+openstack server create --flavor m1.medium --security-group $security_id --image ORANGE --nic port-id=$port_id Node2
 #####################################################################################################################
 
 echo "***"
