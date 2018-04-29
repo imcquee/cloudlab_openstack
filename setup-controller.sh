@@ -4430,7 +4430,8 @@ if [ -n "$DESIGNATE_PASS" -a "${USE_DESIGNATE_AS_RESOLVER}" = "1" ]; then
 		    -e $OURDIR/pssh.setup-designate.stderr \
 		    /etc/resolv.conf /etc/resolv.conf
 	    fi
-	else
+
+else
 	    echo "WARNING: could not redirect phys host DNS to Designate;"
 	    echo "bind is not responding; the configuration must be incorrect;"
 	    echo "reverting back to non-Designate phys host configuration!"
@@ -4480,6 +4481,8 @@ port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`
 openstack server create --flavor m1.large --security-group $security_id --image ORANGE --nic port-id=$port_id secondary
 #####################################################################################################################
 
+rm -f /tmp/setup/ORANGE.vmdk
+
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/bch5ygo690o4ue0hc61sg54szxu9v4bn.vmdk
 
 glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk
@@ -4495,6 +4498,8 @@ openstack server create --flavor m1.large --security-group $security_id --image 
 #####################################################################################################################
 
 wget -O /tmp/setup/OCOMP.vmdk https://clemson.box.com/shared/static/clzx3rxfqewx1ikkv45jerlc26s4uedm.vmdk
+
+rm -f /tmp/setup/OL7.vmdk
 
 glance image-create --name OCOMP --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OCOMP.vmdk
 
