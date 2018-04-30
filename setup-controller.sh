@@ -4484,24 +4484,7 @@ openstack server create --flavor m1.large --security-group $security_id --image 
 glance image-delete $image_id
 rm -f /tmp/setup/ORANGE.vmdk
 
-wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/bch5ygo690o4ue0hc61sg54szxu9v4bn.vmdk
-
-glance image-create --name OL7 --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7.vmdk
-
-project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
-flavor_id=`openstack flavor list -f value | grep m1.large | cut -d' ' -f 1`
-image_id=`openstack image list -f value | grep OL7 | cut -d' ' -f 1`
-security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
-port_id=`openstack port list -f value | grep testport3 | cut -d' ' -f 1`
-
-openstack server create --flavor m1.large --security-group $security_id --image OL7 --nic port-id=$port_id Head
-
-#####################################################################################################################
-
 wget -O /tmp/setup/OCOMP.vmdk https://clemson.box.com/shared/static/clzx3rxfqewx1ikkv45jerlc26s4uedm.vmdk
-
-glance image-delete $image_id
-rm -f /tmp/setup/OL7.vmdk
 
 glance image-create --name OCOMP --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OCOMP.vmdk
 
@@ -4509,18 +4492,21 @@ project_id=`openstack project list -f value | grep admin | cut -d' ' -f 1`
 flavor_id=`openstack flavor list -f value | grep m1.large | cut -d' ' -f 1`
 image_id=`openstack image list -f value | grep OCOMP | cut -d' ' -f 1`
 security_id=`openstack security group list -f value | grep $project_id | cut -d' ' -f 1`
+port_id=`openstack port list -f value | grep testport3 | cut -d' ' -f 1`
+
+openstack server create --flavor m1.large --security-group $security_id --image OCOMP --nic port-id=$port_id Head
+
+#####################################################################################################################
+
 port_id=`openstack port list -f value | grep testport4 | cut -d' ' -f 1`
 
-openstack server create --flavor m1.medium --security-group $security_id --image OCOMP --nic port-id=$port_id Comp1
+openstack server create --flavor m1.large --security-group $security_id --image OCOMP --nic port-id=$port_id Comp1
 
 #####################################################################################################################
 port_id=`openstack port list -f value | grep testport5 | cut -d' ' -f 1`
 
-openstack server create --flavor m1.medium --security-group $security_id --image OCOMP --nic port-id=$port_id Comp2
+openstack server create --flavor m1.large --security-group $security_id --image OCOMP --nic port-id=$port_id Comp2
 #####################################################################################################################
-
-glance image-delete $image_id
-rm -f /tmp/setup/OCOMP.vmdk
 
 echo "***"
 echo "*** Done with OpenStack Setup!"
