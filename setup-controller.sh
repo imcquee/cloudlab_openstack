@@ -4481,8 +4481,9 @@ port_id=`openstack port list -f value | grep testport2 | cut -d' ' -f 1`
 openstack server create --flavor m1.large --security-group $security_id --image ORANGE --nic port-id=$port_id secondary
 #####################################################################################################################
 
+
+rm /tmp/setup/ORANGE.vmdk
 glance image-delete $image_id
-rm -f /tmp/setup/ORANGE.vmdk
 
 wget -O /tmp/setup/OCOMP.vmdk https://clemson.box.com/shared/static/clzx3rxfqewx1ikkv45jerlc26s4uedm.vmdk
 
@@ -4507,6 +4508,9 @@ port_id=`openstack port list -f value | grep testport5 | cut -d' ' -f 1`
 
 openstack server create --flavor m1.large --security-group $security_id --image OCOMP --nic port-id=$port_id Comp2
 #####################################################################################################################
+
+rm /tmp/setup/ORANGE.vmdk
+glance image-delete $image_id
 
 echo "***"
 echo "*** Done with OpenStack Setup!"
